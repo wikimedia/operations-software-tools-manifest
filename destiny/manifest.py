@@ -27,12 +27,24 @@ class Manifest(object):
         if 'web' in data and data['web'] not in Manifest.WEBSERVICE_TYPES:
             raise Manifest.InvalidManifestException('webservice type should be one of %s', Manifest.WEBSERVICE_TYPES)
 
+
     @property
-    def webservice_type(self):
+    def webservice_server(self):
         if 'web' in self.data:
+            # Special case lighttpd-precise as long as we support it
+            if self.data['web'].startswith('lighttpd'):
+                return 'lighttpd'
             return self.data['web']
-        else:
-            return None
+        return None
+
+    @property
+    def webservice_release(self):
+        if 'web' in self.data:
+            if self.data['web'].endswith('-precise'):
+                return 'precise'
+            return 'trusty'
+        return None
+
 
     def __str__(self):
         # Because yaml always does stupid ordering, and we wouldn't want that would we
