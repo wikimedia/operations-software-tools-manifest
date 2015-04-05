@@ -27,7 +27,9 @@ class ManifestCollector(object):
                     # Something is amiss, error and don't process this!
                     continue
             with open(manifest_file) as f:
-                manifest = Manifest(yaml.load(f))
+                fileparts = manifest_file.split('/')
+                toolname = fileparts[3]  # FIXME: Have extra validation to make sure this *is* a tool
+                manifest = Manifest(toolname, yaml.load(f))
                 self.manifests.append(manifest)
 
     def run(self):
