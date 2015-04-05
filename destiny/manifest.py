@@ -15,6 +15,8 @@ class Manifest(object):
                      web: Type of webservice to run for this tool. Currently supported
                           values are lighttpd, lighttpd-precise, nodejs, uwsgi-python, tomcat
         """
+        if data is None:
+            data = {}  # Handle empty service manifests
         self.data = data
 
         if 'web' in data and data['web'] not in Manifest.WEBSERVICE_TYPES:
