@@ -49,6 +49,7 @@ class ManifestCollector(object):
         """
         manifest_files = glob.glob(ManifestCollector.MANIFEST_GLOB_PATTERN)
         self.log.info("Collecting manifests with pattern %s", ManifestCollector.MANIFEST_GLOB_PATTERN)
+        manifests = []
         for manifest_file in manifest_files:
             fileparts = manifest_file.split('/')
             toolname = fileparts[3]  # FIXME: Have extra validation to make sure this *is* a tool
@@ -63,7 +64,8 @@ class ManifestCollector(object):
 
             with open(manifest_file) as f:
                 manifest = Manifest(toolname, yaml.safe_load(f))
-                self.manifests.append(manifest)
+                manifests.append(manifest)
+        self.manifests = manifests
         self.log.info("Collected %s manifests", len(self.manifests))
 
     def run(self):
