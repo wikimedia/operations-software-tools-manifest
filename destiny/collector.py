@@ -3,6 +3,9 @@ import os
 import glob
 import yaml
 import logging
+import time
+import subprocess
+
 
 from .manifest import Manifest
 
@@ -18,6 +21,25 @@ class ManifestCollector(object):
         handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
         self.log.addHandler(handler)
         self.log.setLevel(logging.DEBUG)
+
+    def toollog(self, toolname, message):
+        """
+        Write to a log file in the tool's homedir
+        :param toolname: validated tool name on whose homedir to write log in
+        """
+        # use ugly sudo and whatnot here instead of 'proper' file stuff because unsure how to
+        # preserve permissions in atomic way when writing to a file that may not exist already
+        log_line = "%s %s" % (time.asctime(), message)
+        log_path = '/data/project/%s/services.log' % toolname
+        # Ensure that the file exists already and is owned appropriately by the tool
+        subprocess.check_output([
+            '/usr/bin/sudo',
+            '-i', '-u', 'tools.%s' % toolname,
+            '/usr/bin/touch', log_path
+        ])
+        with open(log_path, 'w') as f:
+            f.write(log_line)
+            self.log.info('[%s] %s', toolname, message)
 
     def collect(self):
         """

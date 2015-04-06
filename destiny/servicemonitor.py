@@ -29,6 +29,7 @@ class ServiceMonitor(ManifestCollector):
             job = qstat_xml.find('.//job_list[JB_name="%s"]' % self._webjob_name(manifest))
             if job is None or 'r' not in job.findtext('.//state'):
                 self._start_webservice(manifest)
+                self.toollog(manifest.toolname, 'No running webservice job found, starting it')
                 restarts_count += 1
         self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
 
