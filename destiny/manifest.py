@@ -3,7 +3,7 @@ import yaml  # Just for pretty printing
 
 class Manifest(object):
     """A service manifest!"""
-    WEBSERVICE_TYPES =('lighttpd', 'lighttpd-precise', 'nodejs', 'uwsgi-python', 'tomcat')
+    WEBSERVICE_TYPES = ('lighttpd', 'lighttpd-precise', 'nodejs', 'uwsgi-python', 'tomcat')
 
     class InvalidManifestException(Exception):
         pass
@@ -27,7 +27,6 @@ class Manifest(object):
         if 'web' in data and data['web'] not in Manifest.WEBSERVICE_TYPES:
             raise Manifest.InvalidManifestException('webservice type should be one of %s', Manifest.WEBSERVICE_TYPES)
 
-
     @property
     def webservice_server(self):
         if 'web' in self.data:
@@ -44,7 +43,6 @@ class Manifest(object):
                 return 'precise'
             return 'trusty'
         return None
-
 
     def __str__(self):
         # Because yaml always does stupid ordering, and we wouldn't want that would we
