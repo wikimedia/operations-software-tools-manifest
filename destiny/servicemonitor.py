@@ -10,6 +10,7 @@ class ServiceMonitor(ManifestCollector):
         return '%s-%s' % (manifest.webservice_server, manifest.toolname)
 
     def _start_webservice(self, manifest):
+        self.log.info('Starting webservice for tool %s', manifest.toolname)
         return subprocess.check_output([
             '/usr/bin/sudo',
             '-i', '-u', 'tools.%s' % manifest.toolname,
@@ -21,15 +22,15 @@ class ServiceMonitor(ManifestCollector):
 
     def run(self):
         qstat_xml = ET.fromstring(subprocess.check_output(['/usr/bin/qstat', '-u', '*', '-xml']))
+        restarts_count = 0
         for manifest in self.manifests:
             if manifest.webservice_server is None:
                 continue
             job = qstat_xml.find('.//job_list[JB_name="%s"]' % self._webjob_name(manifest))
             if job is None or 'r' not in job.findtext('.//state'):
                 self._start_webservice(manifest)
-            else:
-                # All good
-                print("%s all good" % manifest.toolname)
+                restarts_count += 1
+        self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
 
 
 if __name__ == '__main__':
