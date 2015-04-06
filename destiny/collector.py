@@ -62,7 +62,7 @@ class ManifestCollector(object):
                     continue
 
             with open(manifest_file) as f:
-                manifest = Manifest(toolname, yaml.load(f))
+                manifest = Manifest(toolname, yaml.safe_load(f))
                 self.manifests.append(manifest)
         self.log.info("Collected %s manifests", len(self.manifests))
 
