@@ -37,7 +37,7 @@ class ManifestCollector(object):
             '-i', '-u', 'tools.%s' % toolname,
             '/usr/bin/touch', log_path
         ])
-        with open(log_path, 'w') as f:
+        with open(log_path, 'a') as f:
             f.write(log_line)
             self.log.info('[%s] %s', toolname, message)
 
