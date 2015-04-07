@@ -7,13 +7,13 @@ import xml.etree.ElementTree as ET
 
 class ServiceMonitor(ManifestCollector):
     def _webjob_name(self, manifest):
-        return '%s-%s' % (manifest.webservice_server, manifest.toolname)
+        return '%s-%s' % (manifest.webservice_server, manifest.tool.name)
 
     def _start_webservice(self, manifest):
-        self.log.info('Starting webservice for tool %s', manifest.toolname)
+        self.log.info('Starting webservice for tool %s', manifest.tool.name)
         return subprocess.check_output([
             '/usr/bin/sudo',
-            '-i', '-u', 'tools.%s' % manifest.toolname,
+            '-i', '-u', manifest.tool.username,
             '/usr/local/bin/webservice',
             '--release', manifest.webservice_release,
             manifest.webservice_server,
@@ -29,7 +29,8 @@ class ServiceMonitor(ManifestCollector):
             job = qstat_xml.find('.//job_list[JB_name="%s"]' % self._webjob_name(manifest))
             if job is None or 'r' not in job.findtext('.//state'):
                 self._start_webservice(manifest)
-                self.toollog(manifest.toolname, 'No running webservice job found, starting it')
+                manifest.tool.log('No running webservice job found, starting it')
+                self.log.info('Started webservice for %s', manifest.tool.name)
                 restarts_count += 1
         self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
 
