@@ -1,7 +1,8 @@
 import os
 import time
 import pwd
-import subprocess
+
+from .utils import effective_user
 
 
 class Tool(object):
@@ -10,9 +11,10 @@ class Tool(object):
     class InvalidToolException(Exception):
         pass
 
-    def __init__(self, name, username, uid, home):
+    def __init__(self, name, username, uid, gid, home):
         self.name = name
         self.uid = uid
+        self.gid = gid
         self.username = username
         self.home = home
 
@@ -29,21 +31,15 @@ class Tool(object):
             raise Tool.InvalidToolException("No tool with name %s" % (name, ))
         if user_info.pw_uid < 50000:
             raise Tool.InvalidToolException("uid of tools should be < 50000, %s has uid %s" % (name, user_info.pw_uid))
-        return cls(name, user_info.pw_name, user_info.pw_uid, user_info.pw_dir)
+        return cls(name, user_info.pw_name, user_info.pw_uid, user_info.pw_gid, user_info.pw_dir)
 
     def log(self, message):
         """
         Write to a log file in the tool's homedir
         """
-        # use ugly sudo and whatnot here instead of 'proper' file stuff because unsure how to
-        # preserve permissions in atomic way when writing to a file that may not exist already
         log_line = "%s %s" % (time.asctime(), message)
-        log_path = os.path.join(self.home, 'services.log')
-        # Ensure that the file exists already and is owned appropriately by the tool
-        subprocess.check_output([
-            '/usr/bin/sudo',
-            '-i', '-u', self.username,
-            '/usr/bin/touch', log_path
-        ])
-        with open(log_path, 'a') as f:
-            f.write(log_line)
+        log_path = os.path.join(self.home, 'service.log')
+
+        with effective_user(self.uid, self.gid):
+            with open(log_path, 'a') as f:
+                f.write(log_line + '\n')

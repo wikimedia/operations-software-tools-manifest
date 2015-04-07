@@ -36,9 +36,14 @@ class WebServiceMonitor(ManifestCollector):
                 continue
             job = qstat_xml.find('.//job_list[JB_name="%s-%s"]' % (manifest.webservice_server, manifest.tool.name))
             if job is None or 'r' not in job.findtext('.//state'):
-                manifest.tool.log('No running webservice job found, starting it')
-                if self._start_webservice(manifest):
-                    restarts_count += 1
+                try:
+                    manifest.tool.log('No running webservice job found, attempting to start it')
+                    if self._start_webservice(manifest):
+                        restarts_count += 1
+                except Exception:
+                    # More specific exceptions are already caught elsewhere, so this should catch the rest
+                    self.log.exception('Starting webservice for tool %s failed', manifest.tool.name)
+                    self.stats.incr('startfailed')
         self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
         self.stats.incr('startsuccess', restarts_count)
 
