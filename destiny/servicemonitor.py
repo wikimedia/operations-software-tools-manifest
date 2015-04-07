@@ -31,8 +31,10 @@ class ServiceMonitor(ManifestCollector):
                 self._start_webservice(manifest)
                 manifest.tool.log('No running webservice job found, starting it')
                 self.log.info('Started webservice for %s', manifest.tool.name)
+                self.stats.incr('webservice.%s.restarted' % manifest.tool.name)
                 restarts_count += 1
         self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
+        self.stats.incr('webservices_restarted', restarts_count)
 
 
 if __name__ == '__main__':
