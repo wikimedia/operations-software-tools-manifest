@@ -34,7 +34,11 @@ class ManifestCollector(object):
             toolname = fileparts[3]  # FIXME: Have extra validation to make sure this *is* a tool
 
             with open(manifest_file) as f:
-                tool = Tool.from_name(toolname)
+                try:
+                    tool = Tool.from_name(toolname)
+                except Tool.InvalidToolException:
+                    self.log.exception("Exception trying to validate / load tool %s" % (toolname, ))
+                    continue
                 # Support files only if the owner of the file is the tool itself
                 # This should be ok protection against symlinks to random places, I think
                 if os.fstat(f.fileno()).st_uid != tool.uid:
