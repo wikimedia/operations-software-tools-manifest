@@ -33,16 +33,14 @@ class ManifestCollector(object):
             fileparts = manifest_file.split('/')
             toolname = fileparts[3]  # FIXME: Have extra validation to make sure this *is* a tool
 
-            # protect against symlink attacks - support symlinks but only if target and source have same owner
-            if os.path.islink(manifest_file):
-                realpath = os.path.realpath(manifest_file)
-                if os.stat(realpath).st_uid != os.stat(manifest_file).st_uid:
-                    # Something is amiss, error and don't process this!
-                    self.log.warn("Ignoring manifest for tool %s, suspicious symlink", toolname)
-                    continue
-
             with open(manifest_file) as f:
                 tool = Tool.from_name(toolname)
+                # Support files only if the owner of the file is the tool itself
+                # This should be ok protection against symlinks to random places, I think
+                if os.fstat(f.fileno()).st_uid != tool.uid:
+                    # Something is amiss, error and don't process this!
+                    self.log.warn("Ignoring manifest for tool %s, suspicious ownership", toolname)
+                    continue
                 manifest = Manifest(tool, yaml.safe_load(f))
                 manifests.append(manifest)
         self.manifests = manifests
