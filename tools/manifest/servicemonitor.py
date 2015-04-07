@@ -11,14 +11,25 @@ class ServiceMonitor(ManifestCollector):
 
     def _start_webservice(self, manifest):
         self.log.info('Starting webservice for tool %s', manifest.tool.name)
-        return subprocess.check_output([
-            '/usr/bin/sudo',
-            '-i', '-u', manifest.tool.username,
-            '/usr/local/bin/webservice',
-            '--release', manifest.webservice_release,
-            manifest.webservice_server,
-            'start',
-        ])
+        try:
+            subprocess.check_output([
+                '/usr/bin/sudo',
+                '-i', '-u', manifest.tool.username,
+                '/usr/local/bin/webservice',
+                '--release', manifest.webservice_release,
+                manifest.webservice_server,
+                'start',
+            ], timeout=15)  # 15 second timeout!
+            self.log.info('Started webservice for %s', manifest.tool.name)
+            return True
+        except subprocess.CalledProcessError as e:
+            self.log.exception('Could not start webservice for tool %s', manifest.tool.name)
+            self.stats.incr('webservice_startfailed')
+            manifest.tool.log('Could not start webservice - webservice tool exited with error code %s' % e.returncode)
+        except subprocess.TimeoutExpired:
+            self.log.exception('Timed out attempting to start webservice for tool %s', manifest.tool.name)
+            self.stats.incr('webservice_startfailed')
+            manifest.tool.log('Timed out attempting to start webservice (15s)')
 
     def run(self):
         qstat_xml = ET.fromstring(subprocess.check_output(['/usr/bin/qstat', '-u', '*', '-xml']))
@@ -28,11 +39,9 @@ class ServiceMonitor(ManifestCollector):
                 continue
             job = qstat_xml.find('.//job_list[JB_name="%s"]' % self._webjob_name(manifest))
             if job is None or 'r' not in job.findtext('.//state'):
-                self._start_webservice(manifest)
                 manifest.tool.log('No running webservice job found, starting it')
-                self.log.info('Started webservice for %s', manifest.tool.name)
-                self.stats.incr('webservice.%s.restarted' % manifest.tool.name)
-                restarts_count += 1
+                if self._start_webservice(manifest):
+                    restarts_count += 1
         self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
         self.stats.incr('webservices_restarted', restarts_count)
 
