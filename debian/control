@@ -1,0 +1,11 @@
+Source: tools-manifest
+Maintainer: Yuvi Panda <yuvipanda@gmail.com>
+Section: python
+Priority: optional
+Build-Depends: python3-setuptools, python3-all, debhelper (>= 9)
+Standards-Version: 3.9.5
+
+Package: tools-manifest
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: Infrastructure for running services on tools.wmflabs.org
