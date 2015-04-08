@@ -1,0 +1,35 @@
+#!/usr/bin/python3
+import argparse
+import importlib
+import time
+import socket
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('module_name', help='Module name to import collector class from.\n' +
+                                            'Defaults to lowercase of collector class name.\n' +
+                                            'Assumed to (and must) live inside the tools.manifest module',
+                        nargs='?')
+    parser.add_argument('collector_class', help='Which collector class to run')
+    parser.add_argument('--statsd-host', help='Host name to which to send statsd metrics',
+                        default='labmon1001.eqiad.wmnet')
+    parser.add_argument('--sleep', help='Number of seconds to sleep between runs',
+                        type=int, default=10)
+    args = parser.parse_args()
+
+    if args.module_name is None:
+        args.module_name = args.collector_class.lower()
+
+    with open('/etc/wmflabs-project') as f:
+        project_name = f.read().strip()
+
+    statsd_prefix = '%s.%s.%s' % (project_name, socket.gethostname(), args.collector_class)
+
+    module = importlib.import_module('tools.manifest.%s' % (args.module_name, ))
+    cls = getattr(module, args.collector_class)
+    collector = cls(statsd_host=args.statsd_host, statsd_prefix=statsd_prefix)
+
+    while True:
+        collector.collect()
+        collector.run()
+        time.sleep(args.sleep)

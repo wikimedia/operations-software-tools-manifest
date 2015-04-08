@@ -4,7 +4,6 @@ import glob
 import yaml
 import logging
 import statsd
-import socket
 
 from .manifest import Manifest
 from .tool import Tool
@@ -14,7 +13,7 @@ class ManifestCollector(object):
     """Abstract class that collects a bunch of manifests and performs operations on them"""
     MANIFEST_GLOB_PATTERN = '/data/project/*/service.manifest'
 
-    def __init__(self):
+    def __init__(self, statsd_host='labmon1001.eqiad.wmnet', statsd_prefix='tools'):
         self.manifests = []
 
         # Setup logging
@@ -25,8 +24,7 @@ class ManifestCollector(object):
         self.log.setLevel(logging.DEBUG)
 
         # Setup statsd client
-        statsd_prefix = 'tools.%s.%s' % (socket.gethostname(), self.__class__.__name__)
-        self.stats = statsd.StatsClient('labmon1001.eqiad.wmnet', 8125, prefix=statsd_prefix)
+        self.stats = statsd.StatsClient(statsd_host, 8125, prefix=statsd_prefix)
 
     def collect(self):
         """
