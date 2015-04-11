@@ -1,5 +1,5 @@
 import os
-import time
+import datetime
 import pwd
 
 from .utils import effective_user
@@ -37,7 +37,7 @@ class Tool(object):
         """
         Write to a log file in the tool's homedir
         """
-        log_line = "%s %s" % (time.asctime(), message)
+        log_line = "%s %s" % (datetime.datetime.now().isoformat(), message)
         log_path = os.path.join(self.home, 'service.log')
 
         with effective_user(self.uid, self.gid):
