@@ -1,11 +1,19 @@
 import subprocess
-
+import json
+from urllib.request import urlopen
+import xml.etree.ElementTree as ET
 
 from .collector import ManifestCollector
-import xml.etree.ElementTree as ET
 
 
 class WebServiceMonitor(ManifestCollector):
+    def _get_registered_webservices(self):
+        with open('/etc/active-proxy') as f:
+            active_proxy = f.read().strip()
+        list_url = 'http://%s:8081/list' % active_proxy
+        webservices_json = urlopen(list_url).read().decode('utf-8')
+        return json.loads(webservices_json)
+
     def _start_webservice(self, manifest):
         self.log.info('Starting webservice for tool %s', manifest.tool.name)
         try:
@@ -15,7 +23,7 @@ class WebServiceMonitor(ManifestCollector):
                 '/usr/local/bin/webservice',
                 '--release', manifest.webservice_release,
                 manifest.webservice_server,
-                'start',
+                'restart'  # Restart instead of start so they get restarted even if they are running in zombie state
             ], timeout=15)  # 15 second timeout!
             self.log.info('Started webservice for %s', manifest.tool.name)
             return True
@@ -30,12 +38,13 @@ class WebServiceMonitor(ManifestCollector):
 
     def run(self):
         qstat_xml = ET.fromstring(subprocess.check_output(['/usr/bin/qstat', '-u', '*', '-xml']))
+        registered_webservices = self._get_registered_webservices()
         restarts_count = 0
         for manifest in self.manifests:
             if manifest.webservice_server is None:
                 continue
             job = qstat_xml.find('.//job_list[JB_name="%s-%s"]' % (manifest.webservice_server, manifest.tool.name))
-            if job is None or 'r' not in job.findtext('.//state'):
+            if manifest.tool.name not in registered_webservices or job is None or 'r' not in job.findtext('.//state'):
                 try:
                     manifest.tool.log('No running webservice job found, attempting to start it')
                     if self._start_webservice(manifest):

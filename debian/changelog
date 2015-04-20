@@ -1,3 +1,10 @@
+tools-manifest (0.2-1) trusty; urgency=low
+
+  * Monitor proxy registrations and restart if a tool is missing there
+  * Restart rather than 'start'
+
+ -- Yuvi Panda <yuvipanda@gmail.com>  Wed, 20 Apr 2015 03:36:56 -0700
+
 tools-manifest (0.1-1) trusty; urgency=low
 
   * Initial version
