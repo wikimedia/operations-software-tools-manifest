@@ -11,6 +11,8 @@ def effective_user(uid, gid):
     original_gid = os.getegid()
     os.setegid(gid)
     os.seteuid(uid)
-    yield
-    os.setegid(original_gid)
-    os.setuid(original_uid)
+    try:
+        yield
+    finally:
+        os.setegid(original_gid)
+        os.setuid(original_uid)
