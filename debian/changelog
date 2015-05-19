@@ -1,3 +1,9 @@
+tools-manifest (0.3) trusty; urgency=low
+
+  * Fix seteuid / setegid behavior for handling exceptions properly
+
+ -- Yuvi Panda <yuvipanda@gmail.com>  Tue, 9 May 2015 17:00:00 -0400
+
 tools-manifest (0.2-1) trusty; urgency=low
 
   * Monitor proxy registrations and restart if a tool is missing there
