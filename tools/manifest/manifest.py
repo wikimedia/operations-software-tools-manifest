@@ -3,8 +3,6 @@ import yaml  # Just for pretty printing
 
 class Manifest(object):
     """A service manifest!"""
-    WEBSERVICE_TYPES = ('lighttpd', 'lighttpd-precise', 'nodejs', 'uwsgi-python', 'tomcat')
-
     class InvalidManifestException(Exception):
         pass
 
@@ -23,9 +21,6 @@ class Manifest(object):
             data = {}  # Handle empty service manifests
         self.data = data
         self.tool = tool
-
-        if 'web' in data and data['web'] not in Manifest.WEBSERVICE_TYPES:
-            raise Manifest.InvalidManifestException('webservice type should be one of %s', Manifest.WEBSERVICE_TYPES)
 
     @property
     def webservice_server(self):
