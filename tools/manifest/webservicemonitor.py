@@ -16,6 +16,7 @@ class WebServiceMonitor(ManifestCollector):
 
     def _start_webservice(self, manifest):
         self.log.info('Starting webservice for tool %s', manifest.tool.name)
+        manifest.record_starting()
         try:
             subprocess.check_output([
                 '/usr/bin/sudo',
@@ -44,7 +45,23 @@ class WebServiceMonitor(ManifestCollector):
             if manifest.webservice_server is None:
                 continue
             job = qstat_xml.find('.//job_list[JB_name="%s-%s"]' % (manifest.webservice_server, manifest.tool.name))
-            if manifest.tool.name not in registered_webservices or job is None or 'r' not in job.findtext('.//state'):
+            running = False
+
+            if job:
+                state = job.findtext('.//state')
+                if 'r' in state or 's' in state:
+                    running = True
+                    manifest.record_running()
+                if 'w' in state or 'h' in state:
+                    running = True
+
+            if manifest.tool.name not in registered_webservices or not running:
+
+                # Start webservice at most three times in an hour
+                if manifest.starting_too_frequently(3, 3600):
+                    manifest.tool.log('Tool %s starting to frequently - throttled' % manifest.tool.name)
+                    continue
+
                 try:
                     manifest.tool.log('No running webservice job found, attempting to start it')
                     if self._start_webservice(manifest):
@@ -53,6 +70,7 @@ class WebServiceMonitor(ManifestCollector):
                     # More specific exceptions are already caught elsewhere, so this should catch the rest
                     self.log.exception('Starting webservice for tool %s failed', manifest.tool.name)
                     self.stats.incr('startfailed')
+
         self.log.info('Service monitor run completed, %s webservices restarted', restarts_count)
         self.stats.incr('startsuccess', restarts_count)
 
