@@ -28,7 +28,7 @@ class Manifest(object):
         """
         Marks the manifest object as starting, recording the attempt.
         """
-        self.start_times.append(datetime.utcnow())
+        self.start_times.append(datetime.datetime.utcnow())
 
     def record_running(self):
         """
@@ -42,7 +42,8 @@ class Manifest(object):
         Returns true if the manifest object has been started at least 'count' times
         in the past 'window' seconds.
         """
-        return len(self.start_times) >= count and (datetime.utcnow()-self.start_times[-count]).total_seconds() < window
+        return len(self.start_times) >= count and \
+            (datetime.datetime.utcnow()-self.start_times[-count]).total_seconds() < window
 
     @property
     def webservice_server(self):
