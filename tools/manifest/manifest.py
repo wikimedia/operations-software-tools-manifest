@@ -53,7 +53,7 @@ class Manifest(object):
     def webservice_server(self):
         if 'web' in self.data:
             # Special case lighttpd-precise as long as we support it
-            if self.data['web'].startswith('lighttpd'):
+            if self.version < 2 and self.data['web'].startswith('lighttpd'):
                 return 'lighttpd'
             return self.data['web']
         return None

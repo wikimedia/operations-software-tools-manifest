@@ -16,20 +16,20 @@ class WebServiceMonitor(ManifestCollector):
 
     def _start_webservice(self, manifest):
         self.log.info('Starting webservice for tool %s', manifest.tool.name)
+
+        command = [
+            '/usr/bin/sudo',
+            '-i', '-u', manifest.tool.username
+        ]
         if manifest.version == 1:
-            command = '/usr/local/bin/webservice'
+            command.append('/usr/local/bin/webservice')
         else:
-            command = '/usr/bin/webservice-new'
+            command.append('/usr/bin/webservice-new')
+        # Restart instead of start so they get restarted even if they are running in zombie state
+        command.append('restart')
         manifest.record_starting()
         try:
-            subprocess.check_output([
-                '/usr/bin/sudo',
-                '-i', '-u', manifest.tool.username,
-                command,
-                '--release', manifest.webservice_release,
-                manifest.webservice_server,
-                'restart'  # Restart instead of start so they get restarted even if they are running in zombie state
-            ], timeout=15)  # 15 second timeout!
+            subprocess.check_output(command, timeout=15)  # 15 second timeout!
             self.log.info('Started webservice for %s', manifest.tool.name)
             return True
         except subprocess.CalledProcessError as e:
