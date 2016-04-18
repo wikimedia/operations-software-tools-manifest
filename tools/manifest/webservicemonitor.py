@@ -16,12 +16,16 @@ class WebServiceMonitor(ManifestCollector):
 
     def _start_webservice(self, manifest):
         self.log.info('Starting webservice for tool %s', manifest.tool.name)
+        if manifest.version == 1:
+            command = '/usr/local/bin/webservice'
+        else:
+            command = '/usr/bin/webservice-new'
         manifest.record_starting()
         try:
             subprocess.check_output([
                 '/usr/bin/sudo',
                 '-i', '-u', manifest.tool.username,
-                '/usr/local/bin/webservice',
+                command,
                 '--release', manifest.webservice_release,
                 manifest.webservice_server,
                 'restart'  # Restart instead of start so they get restarted even if they are running in zombie state

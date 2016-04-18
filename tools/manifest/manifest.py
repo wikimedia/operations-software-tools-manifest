@@ -23,6 +23,10 @@ class Manifest(object):
         self.data = data
         self.tool = tool
         self.start_times = []
+        if 'version' in data:
+            self.version = data['version']
+        else:
+            self.version = 1
 
     def record_starting(self):
         """

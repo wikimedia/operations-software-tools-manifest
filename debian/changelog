@@ -1,3 +1,9 @@
+tools-manifest (0.6) trusty; urgency=low
+
+  * Add support for v2 service manifests
+
+ -- Yuvi Panda <yuvipanda@gmail.com>  Mon, 18 Apr 2016 12:30:00 -0800
+
 tools-manifest (0.5) trusty; urgency=low
 
   * Throttle webservices trying to start more than thrice
