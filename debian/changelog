@@ -1,3 +1,9 @@
+tools-manifest (0.8) trusty; urgency=low
+
+  * Use new path for new webservice
+
+ -- Yuvi Panda <yuvipanda@gmail.com>  Wed, 27 Apr 2016 16:30:00 +0530
+
 tools-manifest (0.7) trusty; urgency=low
 
   * Simplify restarting services when down

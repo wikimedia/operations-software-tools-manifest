@@ -24,7 +24,7 @@ class WebServiceMonitor(ManifestCollector):
         if manifest.version == 1:
             command.append('/usr/local/bin/webservice')
         else:
-            command.append('/usr/bin/webservice-new')
+            command.append('/usr/bin/webservice')
         # Restart instead of start so they get restarted even if they are running in zombie state
         command.append('restart')
         manifest.record_starting()
