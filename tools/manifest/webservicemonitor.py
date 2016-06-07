@@ -45,6 +45,8 @@ class WebServiceMonitor(ManifestCollector):
         for manifest in self.manifests:
             if manifest.webservice_server is None:
                 continue
+            if manifest.data.get('backend', 'gridengine') != 'gridengine':
+                continue
             job = qstat_xml.find('.//job_list[JB_name="%s-%s"]' % (manifest.webservice_server, manifest.tool.name))
             running = False
 
