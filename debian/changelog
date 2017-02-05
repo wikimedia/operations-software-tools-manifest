@@ -1,8 +1,9 @@
 tools-manifest (0.11~dev) trusty; urgency=medium
 
   * Correct weekday in changelog entry
+  * Add extended description to control
 
- -- Tim Landscheidt <tim@tim-landscheidt.de>  Sun, 05 Feb 2017 06:15:27 +0000
+ -- Tim Landscheidt <tim@tim-landscheidt.de>  Sun, 05 Feb 2017 06:20:38 +0000
 
 tools-manifest (0.10) trusty; urgency=low
 
