@@ -1,8 +1,14 @@
+tools-manifest (0.11~dev) trusty; urgency=medium
+
+  * Correct weekday in changelog entry
+
+ -- Tim Landscheidt <tim@tim-landscheidt.de>  Sun, 05 Feb 2017 06:15:27 +0000
+
 tools-manifest (0.10) trusty; urgency=low
 
   * Only monitor gridengine webservices (ignore k8s ones)
 
- -- Yuvi Panda <yuvipanda@gmail.com>  Tue, 6 Jun 2016 16:30:00 -0800
+ -- Yuvi Panda <yuvipanda@gmail.com>  Mon, 6 Jun 2016 16:30:00 -0800
 
 tools-manifest (0.9) trusty; urgency=low
 
