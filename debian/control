@@ -2,7 +2,8 @@ Source: tools-manifest
 Maintainer: Yuvi Panda <yuvipanda@gmail.com>
 Section: python
 Priority: optional
-Build-Depends: python3-setuptools, python3-all, debhelper (>= 9)
+Build-Depends: debhelper (>= 9), help2man, python3-setuptools,
+ python3-all
 Standards-Version: 3.9.5
 
 Package: tools-manifest
