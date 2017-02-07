@@ -18,5 +18,9 @@ override_dh_clean:
 	rm -f collector-runner.1
 	dh_clean
 
+# The service is explicitly managed by Puppet, so there is no need to
+# start or stop it on package installation or removal.  In addition,
+# dh_installinit does not seem to generate a postrm script for
+# upstart-only services.
 override_dh_installinit:
-	dh_installinit --name=webservicemonitor
+	dh_installinit --noscripts --name=webservicemonitor
