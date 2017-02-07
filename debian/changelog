@@ -1,11 +1,11 @@
-tools-manifest (0.11~dev) trusty; urgency=medium
+tools-manifest (0.11) trusty; urgency=medium
 
   * Correct weekday in changelog entry
   * Add extended description to control
   * Generate man page for collector-runner
   * Do not manage service with package scripts
 
- -- Tim Landscheidt <tim@tim-landscheidt.de>  Tue, 07 Feb 2017 03:41:10 +0000
+ -- Tim Landscheidt <tim@tim-landscheidt.de>  Tue, 07 Feb 2017 04:17:35 +0000
 
 tools-manifest (0.10) trusty; urgency=low
 
