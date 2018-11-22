@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--statsd-host', help='Host name to which to send statsd metrics',
                         default='labmon1001.eqiad.wmnet')
     parser.add_argument('--sleep', help='Number of seconds to sleep between runs',
-                        type=int, default=10)
+                        type=int, default=60)
     args = parser.parse_args()
 
     if args.module_name is None:

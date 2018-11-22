@@ -1,3 +1,9 @@
+tools-manifest (0.12) trusty; urgency=medium
+
+  * Increase sleep time to 60 seconds
+
+ -- Giovanni Tirloni <gtirloni@wikimedia.org> Mon, 26 Nov 2018 00:00:00 +0000
+
 tools-manifest (0.11) trusty; urgency=medium
 
   * Correct weekday in changelog entry

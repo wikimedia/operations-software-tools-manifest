@@ -1,5 +1,5 @@
 Source: tools-manifest
-Maintainer: Yuvi Panda <yuvipanda@gmail.com>
+Maintainer: Wikimedia Cloud Services Team <cloud@lists.wikimedia.org>
 Section: python
 Priority: optional
 Build-Depends: debhelper (>= 9), help2man, python3-setuptools,
