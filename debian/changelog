@@ -1,8 +1,9 @@
 tools-manifest (0.13) stretch; urgency=medium
 
   * [be048a9] tools-manifest: bump debhelper version to 11
+  * [03c63cf] tox.ini: use python3 instead of python3.4
 
- -- Arturo Borrero Gonzalez <aborrero@wikimedia.org>  Mon, 17 Dec 2018 19:24:20 +0100
+ -- Arturo Borrero Gonzalez <aborrero@wikimedia.org>  Mon, 17 Dec 2018 19:31:30 +0100
 
 tools-manifest (0.12) trusty; urgency=medium
 
