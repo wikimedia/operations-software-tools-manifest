@@ -47,6 +47,9 @@ class WebServiceMonitor(ManifestCollector):
                 continue
             if manifest.data.get('backend', 'gridengine') != 'gridengine':
                 continue
+            if manifest.data.get('distribution', 'Ubuntu') != self.distribution:
+                # T212390: Do not try to run across grids
+                continue
             job = qstat_xml.find('.//job_list[JB_name="%s-%s"]' % (manifest.webservice_server, manifest.tool.name))
             running = False
 

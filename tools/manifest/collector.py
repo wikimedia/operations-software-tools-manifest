@@ -1,9 +1,11 @@
-import sys
-import os
 import glob
-import yaml
 import logging
+import os
+import platform
+import sys
+
 import statsd
+import yaml
 
 from .manifest import Manifest
 from .tool import Tool
@@ -14,6 +16,7 @@ class ManifestCollector(object):
     MANIFEST_GLOB_PATTERN = '/data/project/*/service.manifest'
 
     def __init__(self, statsd_host='labmon1001.eqiad.wmnet', statsd_prefix='tools'):
+        self.distribution = platform.linux_distribution()[0]
         self.manifests = []
 
         # Setup logging

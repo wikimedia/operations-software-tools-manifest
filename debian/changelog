@@ -1,3 +1,9 @@
+tools-manifest (0.13) trusty; urgency=medium
+
+  * Respect 'distribution' from service.manifest
+
+ -- Bryan Davis <bd808@wikimedia.org>  Thu, 20 Dec 2018 22:06:00 +0000
+
 tools-manifest (0.12) trusty; urgency=medium
 
   * Increase sleep time to 60 seconds
