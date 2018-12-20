@@ -1,8 +1,16 @@
-tools-manifest (0.13) trusty; urgency=medium
+tools-manifest (0.14) stretch; urgency=medium
 
   * Respect 'distribution' from service.manifest
 
  -- Bryan Davis <bd808@wikimedia.org>  Thu, 20 Dec 2018 22:06:00 +0000
+
+tools-manifest (0.13) stretch; urgency=medium
+
+  * [be048a9] tools-manifest: bump debhelper version to 11
+  * [03c63cf] tox.ini: use python3 instead of python3.4
+  * [fe2c82a] tools-manifest: add systemd support
+
+ -- Arturo Borrero Gonzalez <aborrero@wikimedia.org>  Mon, 17 Dec 2018 19:37:56 +0100
 
 tools-manifest (0.12) trusty; urgency=medium
 
