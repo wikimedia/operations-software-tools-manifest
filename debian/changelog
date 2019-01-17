@@ -1,3 +1,9 @@
+tools-manifest (0.16) stretch; urgency=medium
+
+  * Fix "AttributeError: 'NoneType' object has no attribute 'get'"
+
+ -- Bryan Davis <bd808@wikimedia.org>  Thu, 17 Jan 2019 21:55:00 +0000
+
 tools-manifest (0.15) stretch; urgency=medium
 
   * Preserve restart attempt timestamps between runs

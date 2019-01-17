@@ -17,7 +17,7 @@ class Manifest(object):
         self.data = data or {}
         self.tool = tool
         self.start_times = start_times
-        self.version = data.get('version', 1)
+        self.version = self.data.get('version', 1)
 
     def record_starting(self):
         """Marks the manifest object as starting, recording the attempt."""
