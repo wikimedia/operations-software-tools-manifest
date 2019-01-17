@@ -8,7 +8,7 @@ class Manifest(object):
     class InvalidManifestException(Exception):
         pass
 
-    def __init__(self, tool, data):
+    def __init__(self, tool, data, start_times):
         """Constructs a manifest object from manifest data.
 
         :param tool: tools.Tool The tool this is a manifest for
@@ -16,7 +16,7 @@ class Manifest(object):
         """
         self.data = data or {}
         self.tool = tool
-        self.start_times = []
+        self.start_times = start_times
         self.version = data.get('version', 1)
 
     def record_starting(self):

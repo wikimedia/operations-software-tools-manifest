@@ -35,7 +35,8 @@ if __name__ == '__main__':
     cls = getattr(module, args.collector_class)
     collector = cls(statsd_host=args.statsd_host, statsd_prefix=statsd_prefix)
 
+    last_times = {}
     while True:
-        collector.collect()
-        collector.run()
+        collector.collect(last_times)
+        last_times = collector.run()
         time.sleep(args.sleep)

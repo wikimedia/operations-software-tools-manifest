@@ -1,3 +1,9 @@
+tools-manifest (0.15) stretch; urgency=medium
+
+  * Preserve restart attempt timestamps between runs
+
+ -- Bryan Davis <bd808@wikimedia.org>  Thu, 17 Jan 2019 05:42:00 +0000
+
 tools-manifest (0.14) stretch; urgency=medium
 
   * Respect 'distribution' from service.manifest

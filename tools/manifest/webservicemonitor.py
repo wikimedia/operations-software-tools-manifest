@@ -101,6 +101,11 @@ class WebServiceMonitor(ManifestCollector):
             restarts_count)
         self.stats.incr('startsuccess', restarts_count)
 
+        return {
+            manifest.tool.name: manifest.start_times
+            for manifest in self.manifests
+        }
+
 
 if __name__ == '__main__':
     sm = WebServiceMonitor()

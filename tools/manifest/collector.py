@@ -36,7 +36,7 @@ class ManifestCollector(object):
         self.stats = statsd.StatsClient(
             statsd_host, 8125, prefix=statsd_prefix)
 
-    def collect(self):
+    def collect(self, last_times):
         """Collect all service manifests by scanning the file system
 
         Attempts to protect against security issues (currently, only symlink
@@ -71,7 +71,10 @@ class ManifestCollector(object):
                         toolname)
                     self.stats.incr('suspiciousmanifest')
                     continue
-                manifest = Manifest(tool, yaml.safe_load(f))
+                manifest = Manifest(
+                    tool,
+                    yaml.safe_load(f),
+                    last_times.get(toolname, []))
                 manifests.append(manifest)
         self.manifests = manifests
         self.log.info("Collected %s manifests", len(self.manifests))
