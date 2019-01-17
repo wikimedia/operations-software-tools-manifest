@@ -1,5 +1,5 @@
-import os
 import datetime
+import os
 import pwd
 
 from .utils import effective_user
@@ -20,18 +20,21 @@ class Tool(object):
 
     @classmethod
     def from_name(cls, name):
-        """
-        Create a Tool instance from a tool name
-        """
+        """Create a Tool instance from a tool name"""
         username = Tool.USER_NAME_PATTERN % (name, )
         try:
             user_info = pwd.getpwnam(username)
         except KeyError:
             # No such user was found
-            raise Tool.InvalidToolException("No tool with name %s" % (name, ))
+            raise Tool.InvalidToolException(
+                "No tool with name %s" % (name, ))
         if user_info.pw_uid < 50000:
-            raise Tool.InvalidToolException("uid of tools should be < 50000, %s has uid %s" % (name, user_info.pw_uid))
-        return cls(name, user_info.pw_name, user_info.pw_uid, user_info.pw_gid, user_info.pw_dir)
+            raise Tool.InvalidToolException(
+                "uid of tools should be < 50000, %s has uid %s" % (
+                    name, user_info.pw_uid))
+        return cls(
+            name, user_info.pw_name, user_info.pw_uid,
+            user_info.pw_gid, user_info.pw_dir)
 
     def log(self, message):
         """
