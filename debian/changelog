@@ -1,3 +1,10 @@
+tools-manifest (0.17) stretch; urgency=medium
+
+  * Refactor and simplify python package
+  * Redesign historic restart attempt tracking
+
+ -- Bryan Davis <bd808@wikimedia.org>  Fri, 25 Jan 2019 02:18:00 +0000
+
 tools-manifest (0.16) stretch; urgency=medium
 
   * Fix "AttributeError: 'NoneType' object has no attribute 'get'"

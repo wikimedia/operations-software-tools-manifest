@@ -2,21 +2,15 @@
 
 include /usr/share/dpkg/pkg-info.mk
 
-%:
-	dh $@ --with python3 --buildsystem=pybuild
-
-collector-runner.1:
-	PYTHONPATH=${CURDIR} help2man --no-info				\
-	--version-string="${DEB_VERSION}" -o $@				\
-	-n 'collect manifests and perform operations on them'		\
-	$(CURDIR)/debian/tools-manifest/usr/bin/collector-runner
-
-override_dh_installman: collector-runner.1
-	dh_installman collector-runner.1
-
-override_dh_clean:
-	rm -f collector-runner.1
-	dh_clean
+# Generate manpage with help2man from --help option of python script
+# (recipe from https://git.ligo.org/lscsoft/lvalert)
+export PYBUILD_AFTER_INSTALL_python3 := \
+	echo 'Automatically generating man pages with help2man' && \
+	mkdir -p {destdir}/usr/share/man/man1 && \
+	ls {destdir}/usr/bin | env PYTHONPATH={destdir}{install_dir} \
+	xargs --verbose -I @ help2man --source $(DEB_SOURCE) \
+	--version-string $(DEB_VERSION_UPSTREAM) --no-info --no-discard-stderr \
+	{destdir}/usr/bin/@ -o {destdir}/usr/share/man/man1/@.1
 
 # The service is explicitly managed by Puppet, so there is no need to
 # start or stop it on package installation or removal.  In addition,
@@ -24,3 +18,6 @@ override_dh_clean:
 # upstart-only services.
 override_dh_installinit:
 	dh_installinit --noscripts --name=webservicemonitor
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
