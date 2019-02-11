@@ -1,4 +1,4 @@
-tools-manifest (0.18) stretch; urgency=medium
+tools-manifest (0.19) stretch; urgency=medium
 
   * Format log messages before passing to Tool.log
 
