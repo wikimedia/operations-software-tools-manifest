@@ -1,5 +1,11 @@
 tools-manifest (0.18) stretch; urgency=medium
 
+  * Format log messages before passing to Tool.log
+
+ -- Bryan Davis <bd808@wikimedia.org>  Mon, 11 Feb 2019 18:47:00 +0000
+
+tools-manifest (0.18) stretch; urgency=medium
+
   * Fix graphite metric naming
 
  -- Bryan Davis <bd808@wikimedia.org>  Mon, 11 Feb 2019 18:17:00 +0000

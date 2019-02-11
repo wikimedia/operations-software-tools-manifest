@@ -233,9 +233,11 @@ class WebServiceMonitor(object):
                     first = history[-self.max_tool_restarts]
                     if (now - first).total_seconds() < self.restart_window:
                         manifest.tool.log(
-                            'Throttled for %s restarts in last %s seconds',
-                            self.max_tool_restarts,
-                            self.restart_window,
+                            'Throttled for %s restarts in last %s seconds' %
+                            (
+                                self.max_tool_restarts,
+                                self.restart_window,
+                            )
                         )
                         self.log.warn('Throttled %s', manifest.tool.name)
                         self.stats.incr('throttled')
