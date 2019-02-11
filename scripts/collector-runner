@@ -23,7 +23,7 @@ if __name__ == '__main__':
         project_name = f.read().strip()
 
     statsd_prefix = '%s.%s.%s' % (
-        project_name, socket.gethostname(), args.collector_class)
+        project_name, socket.gethostname(), 'WebServiceMonitor')
 
     collector = WebServiceMonitor(
         statsd_host=args.statsd_host,
