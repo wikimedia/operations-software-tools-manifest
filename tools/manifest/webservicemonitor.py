@@ -189,7 +189,7 @@ class WebServiceMonitor(object):
         ]
         self.restarts[manifest.tool.name].append(datetime.datetime.utcnow())
         try:
-            subprocess.check_output(command, timeout=15)  # 15 second timeout!
+            subprocess.check_output(command, timeout=30)  # 30 second timeout!
             self.log.info("Started webservice for %s", manifest.tool.name)
             return True
         except subprocess.CalledProcessError as e:
@@ -207,7 +207,7 @@ class WebServiceMonitor(object):
                 manifest.tool.name,
             )
             self.stats.incr("startfailed")
-            manifest.tool.log("Timed out attempting to start webservice (15s)")
+            manifest.tool.log("Timed out attempting to start webservice (30s)")
 
     def run(self):
         qstat_xml = ET.fromstring(

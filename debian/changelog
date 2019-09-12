@@ -1,3 +1,9 @@
+tools-manifest (0.20) stretch; urgency=medium
+
+  * Increase the timeout for webservice restarts to 30s
+
+ -- Brooke Storm <bstorm@wikimedia.org>  Thu, 12 Sep 2019 23:47:00 +0000
+
 tools-manifest (0.19) stretch; urgency=medium
 
   * Format log messages before passing to Tool.log
