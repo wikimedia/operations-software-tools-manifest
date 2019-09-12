@@ -99,7 +99,7 @@ class WebServiceMonitor(object):
 
     def __init__(
         self,
-        statsd_host="labmon1001.eqiad.wmnet",
+        statsd_host="cloudmetrics1001.eqiad.wmnet",
         statsd_prefix="tools",
         sleep=60,
         max_tool_restarts=3,

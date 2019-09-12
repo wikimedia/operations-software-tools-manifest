@@ -12,7 +12,7 @@ if __name__ == '__main__':
     parser.add_argument(
         'legacy', metavar='LEGACY', nargs='*', help=argparse.SUPPRESS)
     parser.add_argument(
-        '--statsd-host', metavar='HOST', default='labmon1001.eqiad.wmnet',
+        '--statsd-host', metavar='HOST', default='cloudmetrics1001.eqiad.wmnet',
         help='Host name to which to send statsd metrics')
     parser.add_argument(
         '--sleep', metavar='N', type=int, default=60,
