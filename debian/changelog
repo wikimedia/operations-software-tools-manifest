@@ -1,3 +1,10 @@
+tools-manifest (0.21) stretch; urgency=medium
+
+  [ Brooke Storm ]
+  * [16d329d] statsd: update to the new statsd hostname
+
+ -- Brooke Storm <bstorm@wikimedia.org>  Mon, 10 Feb 2020 23:31:18 +0000
+
 tools-manifest (0.20) stretch; urgency=medium
 
   * Increase the timeout for webservice restarts to 30s
