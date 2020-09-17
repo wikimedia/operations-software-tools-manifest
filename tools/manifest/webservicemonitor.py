@@ -183,6 +183,7 @@ class WebServiceMonitor(object):
             "-u",
             manifest.tool.username,
             "/usr/bin/webservice",
+            "--backend=gridengine",
             # Restart instead of start so they get restarted even if they are
             # running in zombie state
             "restart",
