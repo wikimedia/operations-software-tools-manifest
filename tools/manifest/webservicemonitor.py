@@ -5,7 +5,6 @@ import glob
 import json
 import logging
 import os
-import platform
 import pwd
 import subprocess
 import sys
@@ -106,7 +105,6 @@ class WebServiceMonitor(object):
         restart_window=3600,
     ):
         self.sleep = sleep
-        self.distribution = platform.linux_distribution()[0]
         self.manifests = []
         self.restarts = collections.defaultdict(list)
         self.max_tool_restarts = max_tool_restarts
@@ -184,6 +182,8 @@ class WebServiceMonitor(object):
             manifest.tool.username,
             "/usr/bin/webservice",
             "--backend=gridengine",
+            # Tools without "release" set were started on the Stretch grid
+            "--release={}".format(manifest.data.get("release", "stretch")),
             # Restart instead of start so they get restarted even if they are
             # running in zombie state
             "restart",
@@ -220,11 +220,6 @@ class WebServiceMonitor(object):
             if manifest.webservice_server is None:
                 continue
             if manifest.data.get("backend", "gridengine") != "gridengine":
-                continue
-
-            distribution = manifest.data.get("distribution", "Ubuntu")
-            if distribution != self.distribution:
-                # T212390: Do not try to run across grids
                 continue
 
             job = qstat_xml.find(
