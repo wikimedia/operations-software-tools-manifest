@@ -1,3 +1,13 @@
+tools-manifest (0.23) stretch; urgency=medium
+
+  [ Bryan Davis ]
+  * [350121b] gitignore: ignore wmcs-package-build.py
+
+  [ Taavi Väänänen ]
+  * [f72d38e] Do not compare OS versions
+
+ -- Taavi Väänänen <hi@taavi.wtf>  Thu, 02 Sep 2021 11:41:00 +0300
+
 tools-manifest (0.22) stretch; urgency=medium
 
   * [af991eb] Add `--backend=gridengine` to restart command
