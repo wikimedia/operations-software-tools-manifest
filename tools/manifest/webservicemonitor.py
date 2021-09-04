@@ -18,7 +18,18 @@ from .utils import effective_user
 
 
 class Tool(object):
-    USER_NAME_PATTERN = "tools.%s"
+    _PROJECT = None
+
+    @staticmethod
+    def get_current_project():
+        if Tool._PROJECT is None:
+            with open("/etc/wmcs-project", "r") as _projectfile:
+                Tool._PROJECT = _projectfile.read().strip()
+        return Tool._PROJECT
+
+    @staticmethod
+    def get_prefix():
+        return Tool.get_current_project() + "."
 
     class InvalidToolException(Exception):
         pass
@@ -33,7 +44,7 @@ class Tool(object):
     @classmethod
     def from_name(cls, name):
         """Create a Tool instance from a tool name"""
-        username = Tool.USER_NAME_PATTERN % (name,)
+        username = Tool.get_prefix() + name
         try:
             user_info = pwd.getpwnam(username)
         except KeyError:
