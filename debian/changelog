@@ -1,3 +1,9 @@
+tools-manifest (0.24) stretch; urgency=medium
+
+  * [4cf7c7f] tool: Read name prefix from /etc/wmcs-project
+
+ -- Taavi Väänänen <hi@taavi.wtf>  Wed, 15 Sep 2021 10:54:53 +0300
+
 tools-manifest (0.23) stretch; urgency=medium
 
   [ Bryan Davis ]
