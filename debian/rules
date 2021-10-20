@@ -13,9 +13,7 @@ export PYBUILD_AFTER_INSTALL_python3 := \
 	{destdir}/usr/bin/@ -o {destdir}/usr/share/man/man1/@.1
 
 # The service is explicitly managed by Puppet, so there is no need to
-# start or stop it on package installation or removal.  In addition,
-# dh_installinit does not seem to generate a postrm script for
-# upstart-only services.
+# start or stop it on package installation or removal.
 override_dh_installinit:
 	dh_installinit --noscripts --name=webservicemonitor
 

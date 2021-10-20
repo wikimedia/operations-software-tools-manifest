@@ -1,8 +1,0 @@
-description "Service to ensure that web services are always running once started"
-
-start on runlevel [2345]
-
-respawn
-respawn limit 10 5
-
-exec /usr/bin/collector-runner WebServiceMonitor
