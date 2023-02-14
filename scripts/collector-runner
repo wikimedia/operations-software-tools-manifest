@@ -15,7 +15,7 @@ if __name__ == '__main__':
         help='Number of seconds to sleep between runs')
     args = parser.parse_args()
 
-    with open('/etc/wmflabs-project') as f:
+    with open('/etc/wmcs-project') as f:
         project_name = f.read().strip()
 
     collector = WebServiceMonitor(

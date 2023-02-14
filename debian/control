@@ -9,7 +9,7 @@ Standards-Version: 3.9.5
 Package: tools-manifest
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}
-Description: Infrastructure for running services on tools.wmflabs.org
+Description: Infrastructure for running services on toolforge.org
  tools-manifest provides an upstart service that (re-)starts
  webservices if a tool's service.manifest requires it, but
  no running webservice is found.

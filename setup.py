@@ -9,7 +9,7 @@ setup(
     scripts=[
         'scripts/collector-runner',
     ],
-    description='Infrastructure for running services on tools.wmflabs.org',
+    description='Infrastructure for running services on toolforge.org',
     install_requires=[
         'PyYAML'
     ]
