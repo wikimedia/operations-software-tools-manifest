@@ -11,7 +11,6 @@ setup(
     ],
     description='Infrastructure for running services on tools.wmflabs.org',
     install_requires=[
-        'PyYAML',
-        'statsd'
+        'PyYAML'
     ]
 )

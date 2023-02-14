@@ -11,7 +11,6 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
-import statsd
 import yaml
 
 from .utils import effective_user
@@ -109,8 +108,6 @@ class WebServiceMonitor(object):
 
     def __init__(
         self,
-        statsd_host="cloudmetrics1001.eqiad.wmnet",
-        statsd_prefix="tools",
         sleep=60,
         max_tool_restarts=3,
         restart_window=3600,
@@ -129,9 +126,6 @@ class WebServiceMonitor(object):
         handler.setFormatter(logging.Formatter("%(asctime)s %(message)s"))
         self.log.addHandler(handler)
         self.log.setLevel(logging.DEBUG)
-
-        # Setup statsd client
-        self.stats = statsd.StatsClient(statsd_host, 8125, prefix=statsd_prefix)
 
     def collect(self):
         """Collect all service manifests by scanning the file system
@@ -157,7 +151,6 @@ class WebServiceMonitor(object):
                     self.log.exception(
                         "Exception trying to validate / load tool %s", toolname
                     )
-                    self.stats.incr("invalidtool")
                     continue
                 # Support files only if the owner of the file is the tool
                 # itself. This should be ok protection against symlinks to
@@ -168,13 +161,11 @@ class WebServiceMonitor(object):
                         "Ignoring manifest for tool %s, suspicious ownership",
                         toolname,
                     )
-                    self.stats.incr("suspiciousmanifest")
                     continue
                 manifest = Manifest(tool, yaml.safe_load(f))
                 manifests.append(manifest)
         self.manifests = manifests
         self.log.info("Collected %s manifests", len(self.manifests))
-        self.stats.incr("manifestscollected", len(self.manifests))
 
     def _get_registered_webservices(self):
         with open("/etc/active-proxy") as f:
@@ -208,7 +199,6 @@ class WebServiceMonitor(object):
             self.log.exception(
                 "Could not start webservice for tool %s", manifest.tool.name
             )
-            self.stats.incr("startfailed")
             manifest.tool.log(
                 "Could not start webservice - "
                 "webservice tool exited with error code %s" % e.returncode
@@ -218,7 +208,6 @@ class WebServiceMonitor(object):
                 "Timed out attempting to start webservice for tool %s",
                 manifest.tool.name,
             )
-            self.stats.incr("startfailed")
             manifest.tool.log("Timed out attempting to start webservice (30s)")
 
     def run(self):
@@ -258,7 +247,6 @@ class WebServiceMonitor(object):
                             % (self.max_tool_restarts, self.restart_window)
                         )
                         self.log.warn("Throttled %s", manifest.tool.name)
-                        self.stats.incr("throttled")
                         continue
 
                 try:
@@ -275,13 +263,11 @@ class WebServiceMonitor(object):
                         "Starting webservice for tool %s failed",
                         manifest.tool.name,
                     )
-                    self.stats.incr("startfailed")
 
         self.log.info(
             "Service monitor run completed, %s webservices restarted",
             restarts_count,
         )
-        self.stats.incr("startsuccess", restarts_count)
 
     def main(self):
         while True:

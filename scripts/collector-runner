@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import socket
 
 from tools.manifest.webservicemonitor import WebServiceMonitor
 
@@ -12,9 +11,6 @@ if __name__ == '__main__':
     parser.add_argument(
         'legacy', metavar='LEGACY', nargs='*', help=argparse.SUPPRESS)
     parser.add_argument(
-        '--statsd-host', metavar='HOST', default='cloudmetrics1001.eqiad.wmnet',
-        help='Host name to which to send statsd metrics')
-    parser.add_argument(
         '--sleep', metavar='N', type=int, default=60,
         help='Number of seconds to sleep between runs')
     args = parser.parse_args()
@@ -22,12 +18,7 @@ if __name__ == '__main__':
     with open('/etc/wmflabs-project') as f:
         project_name = f.read().strip()
 
-    statsd_prefix = '%s.%s.%s' % (
-        project_name, socket.gethostname(), 'WebServiceMonitor')
-
     collector = WebServiceMonitor(
-        statsd_host=args.statsd_host,
-        statsd_prefix=statsd_prefix,
         sleep=args.sleep,
     )
     collector.main()
