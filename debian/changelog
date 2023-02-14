@@ -1,3 +1,17 @@
+tools-manifest (0.25) buster; urgency=medium
+
+  [ Taavi Väänänen ]
+  * [8025d4d] debian: drop the upstart script
+  * [df2ba27] debian: drop help2man
+
+  [ Arturo Borrero Gonzalez ]
+  * [7fcf9fa] tools-manifests: don't collect statsd metrics
+  * [f8ddfda] tools-manifest: refresh reference to obsolete 'labs' things
+  * [ed805da] tools-manifest: add d/gbp.conf file
+  * [28991b5] gitignore: ignore nano .swp file
+
+ -- Arturo Borrero Gonzalez <aborrero@wikimedia.org>  Tue, 14 Feb 2023 12:25:53 +0100
+
 tools-manifest (0.24) stretch; urgency=medium
 
   * [4cf7c7f] tool: Read name prefix from /etc/wmcs-project
